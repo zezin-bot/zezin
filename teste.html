@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Relatório PDBM/CIBM</title>
+    <style>
+        /* Estilos básicos para o formulário */
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], textarea { width: 95%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        textarea { height: 80px; resize: vertical; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        button:hover { background-color: #0056b3; }
+        #output-area { margin-top: 20px; padding: 15px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; } /* white-space: pre-wrap mantém as quebras de linha */
+    </style>
+</head>
+<body>
+
+    <h1>Gerador de Relatório PDBM/CIBM</h1>
+    <p>Preencha os campos abaixo para gerar o relatório pronto para copiar e colar.</p>
+
+    <div>
+        <label for="header-unidade">Unidade/Local/Data (Ex: 2°PDBM/2•CIBM - NOVO AIRÃO – 24/04/2025):</label>
+        <input type="text" id="header-unidade" value="2°PDBM/2•CIBM - NOVO AIRÃO – 24/04/2025"> <!-- Pode vir com um valor padrão -->
+
+        <label for="ocorrencia-num">OCORRÊNCIA: N°</label>
+        <input type="text" id="ocorrencia-num">
+
+        <label for="natureza">Natureza:</label>
+        <input type="text" id="natureza">
+
+        <label for="solicitante">Solicitante:</label>
+        <textarea id="solicitante"></textarea>
+
+        <label for="local">Local:</label>
+        <input type="text" id="local">
+
+        <label for="equipe">Equipe (uma pessoa por linha):</label>
+        <textarea id="equipe"></textarea>
+
+        <label for="vtr">VTR Empregada:</label>
+        <input type="text" id="vtr">
+
+        <label for="horario-inicio">Horários - Início:</label>
+        <input type="text" id="horario-inicio" placeholder="Ex: 09:20">
+
+        <label for="horario-termino">Horários - Término:</label>
+        <input type="text" id="horario-termino" placeholder="Ex: 09:50">
+
+        <label for="situacao">SITUAÇÃO:</label>
+        <textarea id="situacao"></textarea>
+
+        <label for="acao">AÇÃO:</label>
+        <textarea id="acao"></textarea>
+
+        <button onclick="gerarRelatorio()">Gerar Relatório</button>
+    </div>
+
+    <h2>Relatório Gerado:</h2>
+    <div id="output-area"></div>
+
+    <script>
+        function gerarRelatorio() {
+            // 1. Obter os valores dos campos de input
+            const headerUnidade = document.getElementById('header-unidade').value;
+            const ocorrenciaNum = document.getElementById('ocorrencia-num').value;
+            const natureza = document.getElementById('natureza').value;
+            const solicitante = document.getElementById('solicitante').value;
+            const local = document.getElementById('local').value;
+            const equipe = document.getElementById('equipe').value; // Equipe pode ter várias linhas
+            const vtr = document.getElementById('vtr').value;
+            const horarioInicio = document.getElementById('horario-inicio').value;
+            const horarioTermino = document.getElementById('horario-termino').value;
+            const situacao = document.getElementById('situacao').value; // Situação pode ter várias linhas
+            const acao = document.getElementById('acao').value; // Ação pode ter várias linhas
+
+            // 2. Construir a string do relatório formatado
+            let relatorioTexto = `${headerUnidade}\n\n`;
+            relatorioTexto += `✅ OCORRÊNCIA: N°${ocorrenciaNum}\n`;
+            relatorioTexto += `Natureza: ${natureza}\n\n`; // Adicionado linha extra conforme exemplo
+
+            relatorioTexto += `✅ Solicitante:\n`;
+            relatorioTexto += `${solicitante}\n\n`; // Mantém as quebras de linha digitadas
+
+            relatorioTexto += `✅ Local: ${local}\n\n`;
+
+            relatorioTexto += `✅ Equipe:\n`;
+            relatorioTexto += `${equipe}\n\n`; // Mantém as quebras de linha digitadas
+
+            relatorioTexto += `✅ VTR Empregada: ${vtr}\n\n`;
+
+            relatorioTexto += `✅ Horários:\n`;
+            relatorioTexto += `- Início: ${horarioInicio}\n`;
+            relatorioTexto += `- Término: ${horarioTermino}\n\n`;
+
+            relatorioTexto += `✅ SITUAÇÃO:\n`;
+            relatorioTexto += `${situacao}\n\n`; // Mantém as quebras de linha digitadas
+
+            relatorioTexto += `✅ AÇÃO:\n`;
+            relatorioTexto += `${acao}`; // Não adiciona linha extra no final
+
+            // 3. Exibir o texto no campo de output
+            document.getElementById('output-area').innerText = relatorioTexto;
+
+            // Opcional: selecionar o texto gerado para facilitar a cópia
+            // Essa parte pode variar um pouco entre navegadores/dispositivos
+            const outputArea = document.getElementById('output-area');
+            const range = document.createRange();
+            range.selectNode(outputArea);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            // alert("Relatório gerado! Agora selecione o texto na caixa abaixo e copie (Ctrl+C).");
+            // Comentado pois a seleção automática nem sempre funciona bem em todos os locais
+        }
+    </script>
+
+</body>
+</html>
